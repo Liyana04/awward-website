@@ -1,15 +1,22 @@
-import React from 'react'
-import {  useRef, useState } from "react";
+// import React, { useEffect } from 'react'
+import {useEffect,  useRef, useState } from "react";
 import Button from './Button';
+import { useGSAP } from '@gsap/react';
+import { TiLocationArrow } from "react-icons/ti";
+import gsap from 'gsap';
+
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
     const [currentIndex, setCurrentIndex] = useState(1);
     const [hasClicked, setHasClicked] = useState(false);
 
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [loadedVideos, setLoadedVideos] = useState(0);
 
-    const totalVideos = 3; // Example total number of videos
+    const totalVideos = 4; // Example total number of videos
     const nextVideoRef = useRef(null)
 
     const handleVideoLoad = () => {
@@ -23,10 +30,72 @@ const Hero = () => {
         setCurrentIndex(upcomingVideoIndex);
     }
 
+    useEffect(() => {
+        if (loadedVideos === totalVideos - 1) {
+            setIsLoading(false);
+        }
+    })
+
+    useGSAP(() => {
+        if(hasClicked){
+            gsap.set("#next-video", {visibility: "visible"});
+            gsap.to("#next-video", {
+                transformOrigin: "center center",
+                scale: 1,
+                width: "100%",
+                height: "100%",
+                duration: 1,
+                ease: "power1.inOut",
+                onStart: () => nextVideoRef.current.play(),
+            })
+
+            gsap.from("#current-video", {
+                transformOrigin: "center center",
+                scale: 0,
+                duration: 1.5,
+                ease: "power1.inOut",
+                onStart: () => nextVideoRef.current.play(),
+            })
+        }
+    // Your GSAP animation code here
+    // gsap.to(".video", { opacity: 1 });
+    }, { 
+        dependencies: [currentIndex], 
+        revertOnUpdate: true 
+    });
+
+    useGSAP(() => {
+    gsap.set("#video-frame", {
+      clipPath: "polygon(14% 0, 72% 0, 90% 90%, 0 100%)",
+      borderRadius: "0 0 40% 10%"
+    })
+
+    gsap.from("#video-frame", {
+        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+        borderRadius: "0%",
+        ease: "power1.inOut",
+        scrollTrigger:{
+            trigger: "#video-frame",
+            start: "center center",
+            end: "bottom center",
+            scrub: true,
+        }
+    })
+  })
+
     const getVideoSrc = (index) => `videos/hero-${index}.mp4`;
 
   return (
     <div className='relative h-dvh w-screen overflow-x-hidden'>
+        {isLoading &&(
+            <div className='flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50'>
+                <div className='three-body'>
+                    <div className='three-body__dot'></div>
+                    <div className='three-body__dot'></div>
+                    <div className='three-body__dot'></div>
+                </div>
+            </div>
+        )}
         <div id='video-frame' className='relative z-10 h-dvh w-screen overflow-hidden
         rounded-lg bg-blue-75'>
             <div>
@@ -48,7 +117,7 @@ const Hero = () => {
                     </h1>
                     <p className='mb-5 max-w-64 font-robert-regular
                     text-blue-100'>Enter the Metagame Layer <br /> Unleash the Play Economy</p>
-                    <Button id="watch-trailer" title="Watch trailer" leftIcon={<isLocationArrow />} containerClass="!bg-yellow-300 flex-center gap-1" />
+                    <Button id="watch-trailer" title="Watch trailer" leftIcon={<TiLocationArrow />} containerClass="!bg-yellow-300 flex-center gap-1" />
 
                 </div>
             </div>

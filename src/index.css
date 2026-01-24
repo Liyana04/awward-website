@@ -25,6 +25,13 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Zentry';
+  src: url('/fonts/zentry.woff2') format('woff2'); /* Adjust path to your public folder */
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* 2. THEME CONFIGURATION (Replaces tailwind.config.js) */
 @theme {
   --font-circular: 'circular-web', sans-serif;
@@ -42,6 +49,8 @@
   --color-violet-300: #5724FF;
   --color-yellow-100: #8E983F;
   --color-yellow-300: #EDFF66;
+
+  --special-font: 'Zentry', sans-serif;
 }
 
 /* 3. CUSTOM UTILITIES (Using the new @utility syntax) */
@@ -71,15 +80,8 @@
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
-@utility special-font {
-  b {
-    font-family: "Zentry";
-    font-feature-settings: "ss01" on;
-  }
-}
-
-@utility hero-heading {
-  @apply uppercase font-zentry font-black text-5xl sm:right-10 sm:text-7xl md:text-9xl lg:text-[12rem];
+.hero-heading {
+  @apply uppercase font-zentry font-black text-6xl sm:right-10 sm:text-5xl md:text-5xl lg:text-[10rem];
 }
 
 @utility about-subtext {
