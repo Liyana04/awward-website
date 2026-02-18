@@ -30,7 +30,7 @@ const Navbar = () => {
                                 key={index}
                                 href={`#${item.toLowerCase()}`}
                                 className="nav-hover-btn"
-                                >  
+                                >
                                 {item}
                                 </a>
                             ))}
