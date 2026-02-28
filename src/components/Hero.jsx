@@ -36,7 +36,7 @@ const Hero = () => {
         }
     })
 
-    useGSAP(() => {
+    useGSAP(() => { 
         if(hasClicked){
             gsap.set("#next-video", {visibility: "visible"});
             gsap.to("#next-video", {
