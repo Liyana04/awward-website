@@ -26,7 +26,7 @@ const Navbar = () => {
                     <div className='flex h-full items-center'>
                         <div className='hidden md:block'>
                             {navItems.map((item, index) => (
-                                <a 
+                                <a
                                 key={index}
                                 href={`#${item.toLowerCase()}`}
                                 className="nav-hover-btn"
